@@ -360,9 +360,9 @@ func TestResponseBodySizeLimit(t *testing.T) {
 			cfg := oconf.NewHTTPConfig(asHTTPOptions(opts)...)
 			c, err := newClient(cfg)
 			require.NoError(t, err)
-			t.Cleanup(func() { _ = c.Shutdown(context.Background()) })
+			t.Cleanup(func() { _ = c.Shutdown(t.Context()) })
 
-			err = c.UploadMetrics(context.Background(), &mpb.ResourceMetrics{})
+			err = c.UploadMetrics(t.Context(), &mpb.ResourceMetrics{})
 			assert.ErrorContains(t, err, "response body too large")
 			assert.Equal(t, 1, calls, "request must not be retried after body-too-large error")
 		})
